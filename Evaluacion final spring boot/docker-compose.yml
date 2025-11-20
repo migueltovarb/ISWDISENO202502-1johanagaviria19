@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+  api:
+    build: .
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/vehiculosdb
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+volumes:
+  mongo_data:

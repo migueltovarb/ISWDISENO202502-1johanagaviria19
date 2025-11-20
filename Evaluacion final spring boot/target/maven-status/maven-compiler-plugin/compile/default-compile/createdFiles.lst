@@ -1,0 +1,5 @@
+com\evaluacion\vehiculos\config\DataLoader.class
+com\evaluacion\vehiculos\VehiculosApiApplication.class
+com\evaluacion\vehiculos\controller\VehicleController.class
+com\evaluacion\vehiculos\repository\VehicleRepository.class
+com\evaluacion\vehiculos\model\Vehicle.class
