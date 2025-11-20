@@ -1,0 +1,43 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Maven Wrapper (lite) for Unix
+# ----------------------------------------------------------------------------
+
+set -e
+
+DIR="$(cd "$(dirname "$0")"; pwd)"
+WRAPPER_PROPERTIES="$DIR/.mvn/wrapper/maven-wrapper.properties"
+
+DIST_URL=$(grep '^distributionUrl=' "$WRAPPER_PROPERTIES" | sed 's/distributionUrl=//')
+if [ -z "$DIST_URL" ]; then
+  echo "distributionUrl not found in $WRAPPER_PROPERTIES"
+  exit 1
+fi
+
+DIST_DIR="$DIR/maven-dist"
+mkdir -p "$DIST_DIR"
+ZIP_NAME=$(basename "$DIST_URL")
+ZIP_PATH="$DIST_DIR/$ZIP_NAME"
+
+if [ ! -f "$ZIP_PATH" ]; then
+  echo "Downloading Maven distribution: $DIST_URL"
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL "$DIST_URL" -o "$ZIP_PATH"
+  elif command -v wget >/dev/null 2>&1; then
+    wget -q "$DIST_URL" -O "$ZIP_PATH"
+  else
+    echo "Error: curl or wget is required"
+    exit 1
+  fi
+fi
+
+EXTRACT_DIR="$DIST_DIR/extracted"
+if [ ! -d "$EXTRACT_DIR" ]; then
+  mkdir -p "$EXTRACT_DIR"
+  unzip -q "$ZIP_PATH" -d "$EXTRACT_DIR"
+fi
+
+MAVEN_DIR=$(ls "$EXTRACT_DIR")
+MAVEN_BIN="$EXTRACT_DIR/$MAVEN_DIR/bin/mvn"
+
+exec "$MAVEN_BIN" "$@"
