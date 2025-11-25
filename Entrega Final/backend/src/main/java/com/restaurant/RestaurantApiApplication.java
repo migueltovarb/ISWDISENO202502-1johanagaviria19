@@ -1,6 +1,6 @@
 package com.restaurant;
 
-// Sistema de gestión de pedidos para cafetería
+// Sistema de Gestión de Pedidos para Cafetería
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
